@@ -1,5 +1,5 @@
 # Epistemic-Jason
-This is a fork of [Michael Vezina Epistemic Jason](https://github.com/MikeVezina/epistemic-jason).  
+This is a fork of https://github.com/MikeVezina/epistemic-jason[Michael Vezina Epistemic Jason].
 
 = Jason
 :icons: font
