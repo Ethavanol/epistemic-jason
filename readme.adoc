@@ -13,13 +13,46 @@ ifdef::env-github[:outfilesuffix: .adoc]
 
 Jason is an interpreter for an extended version of AgentSpeak. It implements the operational semantics of that language, and provides a platform for the development of multi-agent systems, with many user-customisable features. Jason is available as Open Source, and is distributed under GNU LGPL.
 
-Jason is developed by http://jomi.das.ufsc.br[Jomi F. Hübner] and http://www.inf.pucrs.br/r.bordini[Rafael H. Bordini], based on previous work done with many colleagues, in particular Michael Fisher, Joyce Martins, �?lvaro Moreira, Renata Vieira, Willem Visser, Mike Wooldridge, but also many others, as acknowledged in the manual (see the http://jason.sourceforge.net/wp/documents/[documents] page).
+Jason is developed by http://jomi.das.ufsc.br[Jomi F. Hübner] and http://www.inf.pucrs.br/r.bordini[Rafael H. Bordini], based on previous work done with many colleagues, in particular Michael Fisher, Joyce Martins, �?lvaro Moreira, Renata Vieira, Willem Visser, Mike Wooldridge, but also many others, as acknowledged in the manual (see the http://jason.sourceforge.net/wp/documents/[documents] page).
 
 == Documentation
 
 Most of the Jason documentation is available link:doc/readme{outfilesuffix}[in the doc folder].
 
 == Installation
+
+Down here in the "For Jason users" section is the documentation from the basic Jason repo.
+
+=== To install epistemic-jason in MavenLocal (needed to run the localization-demo)
+
+What you want to do here, is to install this jason implementation in your maven local, so you can use it as a dependency then.0
+
+To do this, you need to run the following command in the root of this repo :
+
+----
+./gradlew config
+----
+
+To check that it has been installed correctly, you can verify that the folder org/jason/jason/epistemic-3.1 exists in your local maven repo.
+The maven repo should be in the following folder depending on your OS:
+
+    Windows:
+
+        C:\Users<User_Name>.m2
+
+    Linux:
+
+        /home/<User_Name>/.m2
+
+    Mac:
+
+        /Users/<user_name>/.m2
+
+    And of course, for Linux and Mac, we can write in the short form:
+
+        ~/.m2
+
+Once it's installed locally, you are done with this repo for the localization-demo.
 
 === For Jason users
 
@@ -60,3 +93,5 @@ Other useful gradle tasks:
 <4> produces a zip file in `build/distributions` to be distributed to users.
 
 An _eclipse_ project to change the Jason implementation can be created form menu "File/Import/Existing Gradle Project".
+
+
