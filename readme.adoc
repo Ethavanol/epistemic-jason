@@ -20,7 +20,9 @@ Jason is developed by http://jomi.das.ufsc.br[Jomi F. Hübner] and http://www.in
 Most of the Jason documentation is available link:doc/readme{outfilesuffix}[in the doc folder].
 
 Down here in the "Installation" section is the documentation from the basic Jason repo.
+
 If you want to install this repo as a version of Jason, you can refer to it.
+
 Otherwise if you just want to use this for the localization-demo, you can just refer to the section below "Publish epistemic-jason in MavenLocal"
 
 == Publish epistemic-jason in MavenLocal (needed to run the localization-demo)
