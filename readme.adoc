@@ -38,7 +38,8 @@ If some tests don't pass, run :
 ./gradlew publishToMavenLocal -x test
 ----
 
-To check that it has been installed correctly, you can verify that the folder org/jason/jason/3.1-epistemic exists in your local maven repo.
+To check that it has been installed correctly, you can verify that the folowing folder exists in your local maven repo:
+    org/jason/jason/3.1-epistemic
 The maven repo should be in the following folder depending on your OS:
 
 Windows:
