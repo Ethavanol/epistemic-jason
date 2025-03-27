@@ -19,12 +19,10 @@ Jason is developed by http://jomi.das.ufsc.br[Jomi F. Hübner] and http://www.in
 
 Most of the Jason documentation is available link:doc/readme{outfilesuffix}[in the doc folder].
 
-== Installation
-
-Down here in the "For Jason users" section is the documentation from the basic Jason repo.
+Down here in the "Installation" section is the documentation from the basic Jason repo.
 If you want to install this repo as a version of Jason, you can refer to it.
 
-=== Install epistemic-jason in MavenLocal (needed to run the localization-demo)
+== Publish epistemic-jason in MavenLocal (needed to run the localization-demo)
 
 What you want to do here, is to install this jason implementation in your maven local, so you can use it as a dependency.
 
@@ -43,23 +41,26 @@ If some tests don't pas, run :
 To check that it has been installed correctly, you can verify that the folder org/jason/jason/3.1-epistemic exists in your local maven repo.
 The maven repo should be in the following folder depending on your OS:
 
-    Windows:
+Windows:
 
-        C:\Users<User_Name>.m2
+    C:\Users<User_Name>.m2
 
-    Linux:
+Linux:
 
-        /home/<User_Name>/.m2
+    /home/<User_Name>/.m2
 
-    Mac:
+Mac:
 
-        /Users/<user_name>/.m2
+    /Users/<user_name>/.m2
 
-    And of course, for Linux and Mac, we can write in the short form:
+And of course, for Linux and Mac, we can write in the short form:
 
-        ~/.m2
+    ~/.m2
 
 Once it's installed locally, you are done with this repo for the localization-demo.
+
+
+== Installation
 
 === For Jason users
 
