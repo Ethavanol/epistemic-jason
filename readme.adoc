@@ -32,7 +32,7 @@ To do this, you need to run the following command in the root of this repo :
 ./gradlew publishToMavenLocal
 ----
 
-If some tests don't pas, run :
+If some tests don't pass, run :
 
 ----
 ./gradlew publishToMavenLocal -x test
@@ -43,7 +43,7 @@ The maven repo should be in the following folder depending on your OS:
 
 Windows:
 
-    C:\Users<User_Name>.m2
+    C:\Users\<User_Name>\.m2
 
 Linux:
 
