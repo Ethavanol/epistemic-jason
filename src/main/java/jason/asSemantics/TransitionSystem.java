@@ -1,13 +1,7 @@
 package jason.asSemantics;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
+import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
@@ -46,6 +40,7 @@ import jason.asSyntax.UnnamedVar;
 import jason.asSyntax.VarTerm;
 import jason.asSyntax.parser.ParseException;
 import jason.bb.BeliefBase;
+import jason.comparators.PlanComparator;
 import jason.runtime.Settings;
 import jason.stdlib.add_nested_source;
 import jason.stdlib.desire;
@@ -62,6 +57,8 @@ public class TransitionSystem implements Serializable {
     public enum State {StartRC, SelEv, RelPl, ApplPl, SelAppl, FindOp, AddIM, ProcAct, SelInt, ExecInt, ClrInt}
 
     private transient Logger logger = null;
+
+    private Boolean usingPriorityOverPossInGuards = true;
 
     private Agent ag = null;
     private AgArch agArch = null;
@@ -697,7 +694,10 @@ public class TransitionSystem implements Serializable {
             List<Plan> candidateRPs = plib.getCandidatePlans(C.SE.getTrigger());
             if (candidateRPs != null) {
                 kindOfError = "applicable";
-                for (Plan pl : candidateRPs) {
+                if (usingPriorityOverPossInGuards){
+                    Collections.sort(candidateRPs, new PlanComparator());
+                }
+                for (Plan pl : candidateRPs){
                     C.SO = getOption(C.SE, pl, null);
                     if (C.SO != null)
                         return;

@@ -170,6 +170,14 @@ public class DefaultBeliefBase extends BeliefBase implements Serializable {
         return entry;
     }
 
+    public Map<PredicateIndicator, BelEntry> getBelsMapDefaultNS() {
+        return belsMapDefaultNS;
+    }
+
+    public Map<Atom, Map<PredicateIndicator, BelEntry>> getNameSpacesFull() {
+        return nameSpaces;
+    }
+
     @Override
     public boolean remove(Literal l) {
         Literal bl = contains(l);
@@ -296,7 +304,7 @@ public class DefaultBeliefBase extends BeliefBase implements Serializable {
         }
     }
 
-    class EntryIteratorWrapper implements Iterator<Literal> {
+    public class EntryIteratorWrapper implements Iterator<Literal> {
         Literal last = null;
         Iterator<Literal> il = null;
         BelEntry entry = null;
@@ -418,7 +426,7 @@ public class DefaultBeliefBase extends BeliefBase implements Serializable {
     }
 
     /** each predicate indicator has one BelEntry assigned to it */
-    final class BelEntry implements Serializable {
+    public final class BelEntry implements Serializable {
 
         private static final long serialVersionUID = 213020035116603827L;
 
