@@ -11,34 +11,43 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
-enum ReasonerType {
+enum ReasonerTypeEnum {
     PAL,
     DEL
 }
 
 public class EpistemicExtension implements CircumstanceListener {
     private static final String ON_FUNCTOR = "on";
+    private final Logger extensionLogger = Logger.getLogger(getClass().getName() + " - Extension");
 
-    private final ReasonerType reasonerType;
+    private ReasonerType reasonerType;
     private BeliefBase rangedBeliefs;
     private TransitionSystem ts;
     private EpistemicReasoner reasoner;
     private boolean modelCreated;
 
-    public EpistemicExtension(TransitionSystem ts, ReasonerType reasonerType) {
+    public EpistemicExtension(TransitionSystem ts) throws JasonException {
         this.ts = ts;
         this.modelCreated = false;
-        this.reasonerType = reasonerType;
+        this.reasonerType = ReasonerType.getInstance();
+        this.checkReasonnerType();
         this.reasoner = new EpistemicReasoner();
     }
 
-    public EpistemicExtension(TransitionSystem ts) {
-        // Use DEL as default
-        this(ts, ReasonerType.DEL);
+    public Boolean getModelCreated() {
+        return modelCreated;
     }
 
+    private void checkReasonnerType() throws JasonException {
+        if(this.reasonerType.getReasonerType() == null){
+            throw new JasonException("Reasoner type not supported");
+        } else {
+            extensionLogger.info("Loaded reasoner type: " + this.reasonerType.getReasonerType().toString());
+        }
+    }
 
     public void modelCreateSem() {
         // Do not re-invoke
@@ -80,7 +89,7 @@ public class EpistemicExtension implements CircumstanceListener {
         List<Formula> constraints = new ArrayList<>();
 
         // Propositionalize normal beliefs in DEL
-        if (reasonerType == ReasonerType.DEL) {
+        if (reasonerType.getReasonerType() == ReasonerTypeEnum.DEL) {
             // Add initial beliefs to constraints
             this.ts.getAg().getBB().forEach(l -> {
                 if (!l.isRule() && l.getNS() == Literal.DefaultNS) {
@@ -140,7 +149,7 @@ public class EpistemicExtension implements CircumstanceListener {
         }
 
         // Apply PAL announcement
-        if (reasonerType == ReasonerType.PAL) {
+        if (reasonerType.getReasonerType() == ReasonerTypeEnum.PAL) {
             DELEventModel palModel = new DELEventModel(Set.of(
                     new DELEvent(onEvent.getEventLit().toString(), simplifyAndProp(onEvent.getEventLit()))
             ));
@@ -163,7 +172,7 @@ public class EpistemicExtension implements CircumstanceListener {
 
     private void addOnticLits(DELEventModel eventModel) {
 
-        if (reasonerType == ReasonerType.DEL && eventModel != null) {
+        if (reasonerType.getReasonerType() == ReasonerTypeEnum.DEL && eventModel != null) {
             for (var e : eventModel.getDelEvents()) {
                 for (var propForm : e.getPostCondition().keySet()) {
                     // Need to grab literal form
@@ -514,9 +523,10 @@ public class EpistemicExtension implements CircumstanceListener {
             return true;
         }
 
-        if(reasonerType == ReasonerType.PAL && rangedBeliefs.contains(litCons.clearAnnots()) == null)
+        Literal sansAnot = litCons.clearAnnots();
+        if(reasonerType.getReasonerType() == ReasonerTypeEnum.PAL && rangedBeliefs.contains(sansAnot) == null)
         {
-            System.out.println("Non-ranged belief evaluation for " + litCons.clearAnnots());
+            System.out.println("Non-ranged belief evaluation for " + sansAnot);
             return true;
         }
 
@@ -533,7 +543,7 @@ public class EpistemicExtension implements CircumstanceListener {
         Literal evTrigNoAnn = e.getTrigger().getLiteral().clearAnnots();
 
         // Do not update model if we are in PAL mode and the update is not ranged.
-        if (reasonerType == ReasonerType.PAL && rangedBeliefs.contains(evTrigNoAnn) == null) {
+        if (reasonerType.getReasonerType() == ReasonerTypeEnum.PAL && rangedBeliefs.contains(evTrigNoAnn) == null) {
             System.out.println("Non-ranged update ignored in PAL mode: " + evTrigNoAnn);
             return;
         }

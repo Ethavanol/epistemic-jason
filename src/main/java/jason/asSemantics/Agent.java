@@ -149,7 +149,12 @@ public class Agent implements Serializable, ToDOM {
         if (ts == null) ts = new TransitionSystem(this, null, null, new AgArch());
 
         // Create epistemic extension
-        epistemic = new EpistemicExtension(this.getTS());
+        try {
+            epistemic = new EpistemicExtension(this.getTS());
+        } catch (JasonException e) {
+            throw new RuntimeException(e);
+        }
+
 
         //if (ts.getSettings().hasQueryCache()) qCache = new QueryCache(this);
         //if (ts.getSettings().hasQueryProfiling()) qProfiling = new QueryProfiling(this);

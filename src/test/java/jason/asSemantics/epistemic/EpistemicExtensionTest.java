@@ -1,5 +1,6 @@
 package jason.asSemantics.epistemic;
 
+import jason.JasonException;
 import jason.architecture.AgArch;
 import jason.asSemantics.Agent;
 import jason.asSemantics.Circumstance;
@@ -26,7 +27,12 @@ public class EpistemicExtensionTest {
         var ag = ts.getAg();
         ag.initAg();
 
-        var es = new EpistemicExtension(ts);
+        try {
+            var es = new EpistemicExtension(ts);
+        } catch (JasonException e) {
+            throw new RuntimeException(e);
+        }
+
 
         try {
             ag.getBB().add(new Rule(ASSyntax.parseLiteral("test(X, Y)"),
