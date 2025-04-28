@@ -36,6 +36,7 @@ public class EpistemicExtension implements CircumstanceListener {
         this.separateAgentsModels = SeparateAgentWorlds.getInstance();
         this.reasonerType = ReasonerType.getInstance();
         this.checkReasonnerType();
+        this.checkSeparateValue();
         this.reasoner = new EpistemicReasoner();
     }
 
@@ -48,6 +49,14 @@ public class EpistemicExtension implements CircumstanceListener {
             throw new JasonException("Reasoner type not supported");
         } else {
             extensionLogger.info("Loaded reasoner type: " + this.reasonerType.getReasonerType().toString());
+        }
+    }
+
+    private void checkSeparateValue() throws JasonException {
+        if(this.separateAgentsModels.getSeparateAgentWorlds() == null){
+            throw new JasonException("SeparateAgentWorlds value not supported");
+        } else {
+            extensionLogger.info("Loaded separateAgents value: " + this.separateAgentsModels.getSeparateAgentWorlds().toString());
         }
     }
 
