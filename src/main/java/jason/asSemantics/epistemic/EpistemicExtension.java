@@ -24,6 +24,7 @@ public class EpistemicExtension implements CircumstanceListener {
     private final Logger extensionLogger = Logger.getLogger(getClass().getName() + " - Extension");
 
     private ReasonerType reasonerType;
+    private SeparateAgentWorlds separateAgentsModels;
     private BeliefBase rangedBeliefs;
     private TransitionSystem ts;
     private EpistemicReasoner reasoner;
@@ -32,6 +33,7 @@ public class EpistemicExtension implements CircumstanceListener {
     public EpistemicExtension(TransitionSystem ts) throws JasonException {
         this.ts = ts;
         this.modelCreated = false;
+        this.separateAgentsModels = SeparateAgentWorlds.getInstance();
         this.reasonerType = ReasonerType.getInstance();
         this.checkReasonnerType();
         this.reasoner = new EpistemicReasoner();
@@ -49,7 +51,7 @@ public class EpistemicExtension implements CircumstanceListener {
         }
     }
 
-    public void modelCreateSem() {
+    public void modelCreateSem(String agentName) {
         // Do not re-invoke
         if (modelCreated) return;
 
@@ -61,7 +63,7 @@ public class EpistemicExtension implements CircumstanceListener {
 
         endConstraintTime = System.nanoTime(); // reset for next calc
 
-        boolean result = reasoner.createModel(constraints);
+        boolean result = reasoner.createModel(constraints, separateAgentsModels.getSeparateAgentWorlds(), agentName);
         long endGenerationTime = System.nanoTime();
 
         this.ts.getAg().getLogger().info("Model Generation Time (ms): " + ((endGenerationTime - endConstraintTime) / 1000000));
@@ -136,7 +138,7 @@ public class EpistemicExtension implements CircumstanceListener {
      * @param event
      * @throws JasonException
      */
-    public void applyEventModel(Event event) throws JasonException {
+    public void applyEventModel(Event event, String agentName) throws JasonException {
         long startTime = System.nanoTime();
 
         // Map each trigger to an 'on' event representation
@@ -153,14 +155,14 @@ public class EpistemicExtension implements CircumstanceListener {
             DELEventModel palModel = new DELEventModel(Set.of(
                     new DELEvent(onEvent.getEventLit().toString(), simplifyAndProp(onEvent.getEventLit()))
             ));
-            reasoner.applyEventModel(palModel);
+            reasoner.applyEventModel(palModel, separateAgentsModels.getSeparateAgentWorlds(), agentName);
         } else {
             DELEventModel eventModel = createEventModel(onEvent);
             long consEndTime = System.nanoTime();
             System.out.println("Time to find " + eventModel.getDelEvents().size() + " applicable 'on' plans for " + onEvent.getEventLit() + " (ms): " + (consEndTime - startTime) / 1000000);
 
             // If application is success, add ontic lits
-            if (reasoner.applyEventModel(eventModel)) {
+            if (reasoner.applyEventModel(eventModel, separateAgentsModels.getSeparateAgentWorlds(), agentName)) {
                 addOnticLits(eventModel);
             }
         }
@@ -509,7 +511,7 @@ public class EpistemicExtension implements CircumstanceListener {
         return new OrFormula(literals);
     }
 
-    public boolean evaluate(EpistemicModality modality, Literal litCons, Formula propFormula) {
+    public boolean evaluate(EpistemicModality modality, Literal litCons, Formula propFormula, String agentName) {
         // Evaluate true/false without delegating to reasoner
         if (propFormula instanceof PropFormula) {
             if (((PropFormula) propFormula).getPropLit().equals(Literal.LTrue))
@@ -531,7 +533,7 @@ public class EpistemicExtension implements CircumstanceListener {
         }
 
         // Map modality to formulas
-        return reasoner.evaluateFormula(new ModalPropFormula(modality, propFormula));
+        return reasoner.evaluateFormula(new ModalPropFormula(modality, propFormula), separateAgentsModels.getSeparateAgentWorlds(), agentName);
     }
 
     @Override
@@ -557,7 +559,7 @@ public class EpistemicExtension implements CircumstanceListener {
 
         // Create and apply PAL/DEL event model
         try {
-            applyEventModel(event);
+            applyEventModel(event, ts.getAgArch().getAgName());
         } catch (JasonException ex) {
             throw new RuntimeException(ex);
         }

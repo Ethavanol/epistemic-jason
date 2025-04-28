@@ -699,7 +699,7 @@ public abstract class Literal extends DefaultTerm implements LogicalFormula {
                     RewriteUnifier checkUnif = il.next();
 
                     // Model-check current formula. Return first available formula
-                    if (ag.getTS().getEpistemic().evaluate(parsedForm.getFirst(), Literal.this, checkUnif.getFormula().simplify().toPropFormula())) {
+                    if (ag.getTS().getEpistemic().evaluate(parsedForm.getFirst(), parsedForm.getSecond(), checkUnif.getFormula().simplify().toPropFormula(), ag.getTS().getAgArch().getAgName())) {
                         current = checkUnif;
                         return;
                     }

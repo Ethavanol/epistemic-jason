@@ -128,7 +128,7 @@ public class Agent implements Serializable, ToDOM {
             ag.load(asSrc); // load the source code of the agent
 
             // Create epistemic model after loading program
-            ag.getEpistemic().modelCreateSem();
+            ag.getEpistemic().modelCreateSem(arch.getAgName());
             return ag;
         //} catch (Exception e) {
         //    throw new JasonException("as2j: error creating the customised Agent class! - "+agClass, e);
@@ -828,7 +828,7 @@ public class Agent implements Serializable, ToDOM {
         //long startTime = qProfiling == null ? 0 : System.nanoTime();
 
         // to copy percepts allows the use of contains below
-        Set<StructureWrapperForLiteral> perW = new HashSet<>();
+        List<StructureWrapperForLiteral> perW = new ArrayList<>();
         Iterator<Literal> iper = percepts.iterator();
         while (iper.hasNext()) {
             Literal l = iper.next();

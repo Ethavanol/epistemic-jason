@@ -221,7 +221,7 @@ public class Rewriter {
             defaultBeliefBase.add(ASSyntax.parseRule("obs(down) :- loc(1, 1) | loc(2, 1)."));
             defaultBeliefBase.add(ASSyntax.parseRule("~obs(D) :- .member(D, [up, down, left, right]) & not obs(D)."));
 
-            a.getTS().getEpistemic().modelCreateSem();
+            a.getTS().getEpistemic().modelCreateSem("agent");
 
 
             var rew = ASSyntax.parseLiteral("~obs(down)").rewriteConsequences(a, new Unifier());

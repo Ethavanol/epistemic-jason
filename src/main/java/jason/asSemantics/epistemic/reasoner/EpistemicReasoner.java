@@ -43,7 +43,7 @@ public class EpistemicReasoner {
     }
 
 
-    public boolean createModel(Collection<Formula> constraints) {
+    public boolean createModel(Collection<Formula> constraints, Boolean separateWorlds, String agentName) {
         metricsLogger.info("Creating model with " + constraints.size() + " constraints");
 
         // dumpConstraints(constraints);
@@ -54,6 +54,12 @@ public class EpistemicReasoner {
         // Maybe have the managed worlds object be event-driven for information updates.
         JsonObject managedJson = new JsonObject();
         managedJson.add("constraints", StringListToJsonArray(constraints));
+
+        managedJson.add("separateWorlds", new JsonPrimitive(separateWorlds));
+
+        if(separateWorlds) {
+            managedJson.add("id", new JsonPrimitive(agentName));
+        }
 
         if (constraints.size() > MAX_CONSTRAINTS_LOG)
             LOGGER.info("Over " + MAX_CONSTRAINTS_LOG + " constraints. Not printing model creation request");
@@ -149,7 +155,7 @@ public class EpistemicReasoner {
         return res;
     }
 
-    public boolean applyEventModel(DELEventModel eventModel) {
+    public boolean applyEventModel(DELEventModel eventModel, Boolean separateWorlds, String agentName) {
         var json = new JsonObject();
         var arr = new JsonArray();
 
@@ -172,6 +178,10 @@ public class EpistemicReasoner {
         }
 
         json.add("events", arr);
+
+        if(separateWorlds){
+            json.add("id", new JsonPrimitive(agentName));
+        }
 
         var req = RequestBuilder
                 .post(reasonerConfiguration.getTransitionUpdateEndpoint())
@@ -239,7 +249,7 @@ public class EpistemicReasoner {
         return formulaResults;
     }
 
-    public Boolean evaluateFormula(Formula formula) {
+    public Boolean evaluateFormula(Formula formula, Boolean separateWorlds, String agentName) {
         long initialTime = System.nanoTime();
         metricsLogger.info("Evaluating formula: " + formula.toString());
 
@@ -249,6 +259,10 @@ public class EpistemicReasoner {
 
         var jsonBody = new JsonObject();
         jsonBody.add("formula", formula.toJson());
+
+        if(separateWorlds){
+            jsonBody.add("id", new JsonPrimitive(agentName));
+        }
 
         var req = RequestBuilder
                 .post(reasonerConfiguration.getSingleEvaluateEndpoint())
