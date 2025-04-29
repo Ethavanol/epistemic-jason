@@ -183,15 +183,17 @@ if (JavaVersion.current().isJava8Compatible()) {
 }
 
 
-task javadocJar (type: Jar, dependsOn: javadoc) {
-    archiveBaseName = 'jason'
-    classifier = 'javadoc'
-    from '${docsDir}/../../doc/api'
+tasks.register('javadocJar', Jar) {
+    dependsOn tasks.javadoc
+    archiveBaseName.set('jason')
+    archiveClassifier.set('javadoc')
+    from layout.projectDirectory.dir("${docsDir}/../../doc/api")
 }
 
-task sourceJar (type : Jar) {
-    archiveBaseName = 'jason'
-    classifier = 'sources'
+
+tasks.register('sourceJar', Jar) {
+    archiveBaseName.set('jason')
+    archiveClassifier.set('sources')
     from sourceSets.main.allSource
 }
 

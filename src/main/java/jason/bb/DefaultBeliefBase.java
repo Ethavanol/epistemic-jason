@@ -118,6 +118,14 @@ public class DefaultBeliefBase extends BeliefBase implements Serializable {
         return add(l, index != 0);
     }
 
+    public Map<PredicateIndicator, BelEntry> getBelsMapDefaultNS() {
+        return this.belsMapDefaultNS;
+    }
+
+    public Map<Atom, Map<PredicateIndicator, BelEntry>> getNameSpacesFull() {
+        return this.nameSpaces;
+    }
+
     protected boolean add(Literal l, boolean addInEnd) {
         if (!l.canBeAddedInBB()) {
             logger.log(Level.SEVERE, "Error: '"+l+"' can not be added in the belief base.");
@@ -296,7 +304,7 @@ public class DefaultBeliefBase extends BeliefBase implements Serializable {
         }
     }
 
-    class EntryIteratorWrapper implements Iterator<Literal> {
+    public class EntryIteratorWrapper implements Iterator<Literal> {
         Literal last = null;
         Iterator<Literal> il = null;
         BelEntry entry = null;
@@ -418,7 +426,7 @@ public class DefaultBeliefBase extends BeliefBase implements Serializable {
     }
 
     /** each predicate indicator has one BelEntry assigned to it */
-    final class BelEntry implements Serializable {
+    public final class BelEntry implements Serializable {
 
         private static final long serialVersionUID = 213020035116603827L;
 
