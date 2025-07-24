@@ -136,6 +136,18 @@ public class EpistemicExtension implements CircumstanceListener {
         for (Literal l : rangeValues)
             this.rangedBeliefs.add(l);
 
+        if (reasonerType.getReasonerType() == ReasonerTypeEnum.PAL) {
+            // In the case of PAL, we don't want to add to the reasonner all beliefs from the Agent.
+            // BUT, we wan't to add those that are related to the rangeValues.
+            // For example, if we declare range(none) and then ~none in the agent code,
+            // we want the belief ~none to be add to the reasonner as a constraint.
+            this.ts.getAg().getBB().forEach(l -> {
+                if (!l.isRule() && l.getNS() == Literal.DefaultNS && l.hasSource(new Atom("self")) && rangeValues.contains(l.clearAnnots())) {
+                    constraints.add(l.toPropFormula());
+                }
+            });
+            System.out.println("Finished: Propositionalized beliefs");
+        }
 
         return constraints;
     }
