@@ -77,12 +77,12 @@ Let's move on to the "Configuration" section.
 
 In any Jason projects the epistemic-jason extension is needed, you will have to put the following lines in the build.gralde file :
 
----
+----
 dependencies {
     implementation group: 'org.jason' , name: 'jason' , version: '3.3-epistemic',
             changing: true, transitive: true
 }
----
+----
 
 Then to use the epistemic extension in the code, the agent class must be specified as AgentEpistemic (or a subclass thereof) in the mas2j configuration file.
 Further details are available in the demo repository.
