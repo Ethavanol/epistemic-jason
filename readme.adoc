@@ -31,7 +31,19 @@ This section explains how to publish this version of Jason into a mavenLocal so 
 
 For all the projects we did in Jason, we have been using Gradle. Here the command lines will be using Gradle.
 
-== Publish epistemic-jason in MavenLocal
+This extension communicates with a reasonner (server). It won't be possible to use the epistemic extension without this server.
+Click the https://github.com/Ethavanol/epistemic-reasoner[here] to install this reasonner.
+A demonstration of how to use this extension in the code once installed is available https://github.com/Ethavanol/localization-demo[here]
+
+=== Clone the Project
+
+Clone the project with :
+
+----
+git clone https://github.com/Ethavanol/epistemic-jason
+----
+
+=== Publish epistemic-jason in MavenLocal
 
 The goal here is to install this jason implementation in the maven local, so you can use it as a dependency.
 
