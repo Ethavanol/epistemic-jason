@@ -1,13 +1,49 @@
 = Jason release notes
 :toc: right
 
-ifdef::env-github[:outfilesuffix: .adoc]
+== version 3.3 (2024-02-21)
 
-== version 3.1
+- Java 21 is used
+
+- Agent's thread is Virtual and not Platform. It allow us to run thousands of agents. 
+
+- namespaces may have assigned properties/values. See internal actions `.namespace_set_property` and  `.namespace_get_property`.
+
+- internal actions `.min` and `.max` may have a query as second argument.
+
+- several (minor) improvements in Jason-CLI. About running a project:
+
+  * `jason x.mas2j` uses gradle to run the application
+  * `jason mas start --mas2j=x.mas2j` runs without gradle. The classpath might be informed using `--cp` if necessary.
+
+  * `jason app compile` uses shadowJar to create a jar file with all files and dependencies to run the application.
+
+- update doc for new Jason web site: https://jason-lang.github.io
+
+
+
+== version 3.2 (2023-04-15)
+
+The main new feature of Jason 3.2 is the Jason Command Line Interface (*JasonCLI*). This tool is created to support the creation and monitoring of Jason application independently of IDEs. More information xref:./jason-cli/readme.adoc[here].
+
+- Java17 is used
+- some bugs were fixed
+- preliminary support for packages (used by JaCaMo)
+- Jason is available in https://central.sonatype.com/artifact/io.github.jason-lang/jason-interpreter[Maven Central]
+- `mas2j` files do not handle java class path  anymore. Gradle should be used for that. The command `jason app add-gradle` turn a Jason project into a Gradle project. It also helps your IDE to find Jason dependencies when programming Java classes for the environment, internal actions, ...
+- to use JADE, the Jason project should have a Gradle script. Then `./gradlew runJade` can be  used to start the MAS on top of JADE.  
+
+The project is cleaned:
+
+- jEdit is removed (JasonCLI and third party IDEs are proposed)
+- Ant is replaced by Gradle
+- Java Web Start is not used anymore
+
+== version 3.1 (2022-03-23)
 
 - This release only contains bug fixes
 
-== version 3.0
+== version 3.0 (2021-09-07)
 
 - The major contribution of this version is the inclusion of Jason(ER), see papers https://link.springer.com/chapter/10.1007%2F978-3-030-25693-7_3[AgentSpeak(ER): Enhanced Encapsulation in Agent Plans] and http://lamas20.ipipan.waw.pl/assets/proceedings/paper-12.pdf[Encapsulating Reactive Behaviour in Goal-based Plans for Programming BDI Agents].
   * improved encapsulation (sub-plans)
@@ -84,7 +120,7 @@ MAS ex1 {
 ----
 java -cp "$JASON_HOME/libs/*" jason.infra.centralised.RunCentralisedMAS \
     x.mas2j \
-    --log-conf mylog..properties
+    --log-conf mylog.properties
 ----
 +
 ----
@@ -250,7 +286,7 @@ else        { .print(d); }
 
 - modules and namespaces, see link:doc/tech/modules-namespaces.pdf[]
 
-- concurrent courses of actions within a single plan and advanced concurrent agent architectures, see link:doc/tech/concurrency{outfilesuffix}[]
+- concurrent courses of actions within a single plan and advanced concurrent agent architectures, see xref:doc/tech/concurrency.adoc[]
 
 - operator `+` works with plans and rules enclosed by { and }. For instance:
 +
@@ -288,7 +324,7 @@ else        { .print(d); }
 NOTE: In Jason 2.0 the way to run the Jason IDE (based on jEdit) has changed. Rather than running an application (`Jason.exe` or `Jason.app`), the IDE is now run by double clicking the `jedit/jedit.jar` file or using the script files in the `scripts` folder.
 
 
-*New Tutorial* on BDI (see link:doc/tutorials/hello-bdi/readme{outfilesuffix}[]).
+*New Tutorial* on BDI (see xref:doc/tutorials/hello-bdi/readme.adoc[]).
 
 == version 1.4.2 (2015-03-03)
 
@@ -758,7 +794,7 @@ New internal actions
 New functions
 
 -  .math.sum: sums a list of numbers
--  .math.average: returns the average of a list of numbers
+-  .math.average: returns the average of a list of numbers (renamed to math.mean in jason 3.3)
 
 
 API changes

@@ -19,18 +19,21 @@ Jason is an interpreter for an extended version of AgentSpeak. It implements the
 
 Jason is developed by http://jomi.das.ufsc.br[Jomi F. Hübner] and http://www.inf.pucrs.br/r.bordini[Rafael H. Bordini], based on previous work done with many colleagues, in particular Michael Fisher, Joyce Martins, �?lvaro Moreira, Renata Vieira, Willem Visser, Mike Wooldridge, but also many others, as acknowledged in the manual (see the http://jason.sourceforge.net/wp/documents/[documents] page).
 
-== Documentation
+The Epistemic-Jason extension integrates possible worlds semantics into Jason agent programs, enabling agents to reason about their own abilities and knowledge.
 
-Most of the Jason documentation is available link:doc/readme{outfilesuffix}[in the doc folder].
+As explained previously, this extension has been initially created and developed by Michael Vezina. This version is just an upgraded, maintained and clearer version of it.
+You can find Mike Vezina's repo https://github.com/MikeVezina/epistemic-jason[here].
 
-Down here in the "Installation" section is the documentation from the basic Jason repo.
-If you want to install this repo as a version of Jason, you can refer to it.
+== Installation
 
-Otherwise if you just want to use this for the localization-demo, you can just refer to the section below "Publish epistemic-jason in MavenLocal"
+To use the epistemic-jason extension, you will have to follow the next steps.
+This section explains how to publish this version of Jason into a mavenLocal so someone can use it.
 
-== Publish epistemic-jason in MavenLocal (needed to run the localization-demo)
+For all the projects we did in Jason, we have been using Gradle. Here the command lines will be using Gradle.
 
-What you want to do here, is to install this jason implementation in your maven local, so you can use it as a dependency.
+== Publish epistemic-jason in MavenLocal
+
+The goal here is to install this jason implementation in the maven local, so you can use it as a dependency.
 
 To do this, you need to run the following command in the root of this repo :
 
@@ -44,9 +47,9 @@ If some tests don't pass, run :
 ./gradlew publishToMavenLocal -x test
 ----
 
-To check that it has been installed correctly, you can verify that the folowing folder exists in your local maven repo:
+To check that it has been installed correctly, you can verify that the following folder exists in your local maven repo:
 
-    org/jason/jason/3.1-epistemic
+    org/jason/jason/3.3-epistemic
 
 The maven repo should be in the following folder depending on your OS:
 
@@ -66,49 +69,20 @@ And of course, for Linux and Mac, we can write in the short form:
 
     ~/.m2
 
-Once it's installed locally, you are done with this repo for the localization-demo.
+Once this is done, the "Installation" part is done.
+Let's move on to the "Configuration" section.
 
 
-== Installation
+== Configuration
 
-=== For Jason users
+In any Jason projects the epistemic-jason extension is needed, you will have to put the following lines in the build.gralde file :
 
-- get a release https://sourceforge.net/projects/jason/files/jason/[here]
-// - install the eclipse plugin as described http://jacamo.sourceforge.net/eclipseplugin/tutorial[here] or configure your shell command as described http://jacamo.sourceforge.net/tutorial/hello-world/shell-based.html[here]
-- follow the link:doc/tutorials/getting-started/readme{outfilesuffix}[getting started tutorial]
-- more documentation http://jason.sourceforge.net/wp/documents[here]
+---
+dependencies {
+    implementation group: 'org.jason' , name: 'jason' , version: '3.3-epistemic',
+            changing: true, transitive: true
+}
+---
 
-NOTE: In Jason 2.0 the way to run the Jason IDE (based on jEdit) has changed. Rather than running an application (`Jason.exe` or `Jason.app`), the IDE is now run by double clicking the `jedit/jedit.jar` file or using the script files in the `scripts` folder.
-
-=== For Jason developers
-
-----
-git clone https://github.com/jason-lang/jason.git
-cd jason
-./gradlew config // <1> <2>
-----
-<1> the config task builds the jason jar, configure jason properties file, and place all jars in `build/libs`.
-<2> this task also prints out the commands to set up the `JASON_HOME` and `PATH` variables.
-
-Examples can be run using the `jason` shell script, for example:
-
-	jason examples/gold-miners-II/miners.mas2j
-
-The Jason IDE based on jEdit can be launched by the `jason-ide` script or `java -jar build/jedit/jedit.jar`.
-
-Other useful gradle tasks:
-
------
-./gradlew jar     // <1>
-./gradlew doc     // <2>
-./gradlew clean   // <3>
-./gradlew release // <4>
------
-<1> generates a new jason jar.
-<2> generates the javadoc and transforms asciidoc files into html (Docker must be running for the latter).
-<3> cleans all generated files.
-<4> produces a zip file in `build/distributions` to be distributed to users.
-
-An _eclipse_ project to change the Jason implementation can be created form menu "File/Import/Existing Gradle Project".
-
-
+Then to use the epistemic extension in the code, the agent class must be specified as AgentEpistemic (or a subclass thereof) in the mas2j configuration file.
+Further details are available in the demo repository.

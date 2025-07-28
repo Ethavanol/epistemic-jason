@@ -2,8 +2,8 @@
 
 MAS auction {
 
-    agents: ag1;
-            ag2;
-            ag3        [mindinspector="gui(cycle,html,history)"]; // this agent has a GUI mind inspector
+    agents: ag1 agentClass example.TestAgent;
+            ag2 agentClass example.TestAgent;
+            ag3 [mindinspector="gui(cycle,html,history)"] agentClass example.TestAgent; // this agent has a GUI mind inspector
             auctioneer agentArchClass AuctioneerGUI;
 }

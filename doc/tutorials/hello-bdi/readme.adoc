@@ -8,12 +8,11 @@ Jomi F. Hubner (with Rafael H. Bordini support)
 :icons: font
 :prewrap!:
 
-ifdef::env-github[:outfilesuffix: .adoc]
 
 == Introduction
 
 This programming (mini) tutorial illustrates how the BDI model is
-used in the http://jason.sf.net[Jason] agent-oriented programming
+used in the http://jason-lang.github.io[Jason] agent-oriented programming
 language. We start by a very simple agent code and progress exploring
 the BDI features of Jason.
 
@@ -108,8 +107,7 @@ in this case).
 === Execution
 
 * Create a new project: you can link:./hello-bdi-code.zip[download] and initial JaCaMo project;
-  or use
-http://jason.sourceforge.net/mini-tutorial/getting-started/[Jason jEdit], http://jason.sourceforge.net/mini-tutorial/eclipse-plugin/[Jason Eclipse],  http://jacamo.sourceforge.net/doc/install.html#_eclipse_plugin[JaCaMo Eclipse], or  http://jacamo.sourceforge.net/doc/install.html#_gradle[*JaCaMo gradle commands*] to create and run the programs of this tutorial.
+  or create a new one Jason application with JasonCLI: `jason app create bdi_hw`.
 * Create agent Bob with the source code above (file `bob.asl`). The project should
 look like:
 +
@@ -123,7 +121,6 @@ a|
 MAS bdi_hw {
 
     agents: bob;
-    // file bob.asl at project directory
 
 }
 ----------------
@@ -141,7 +138,7 @@ mas bdi_hw {
 
 |===
 
-* Run the project. In the case of JaCaMo, run the script `./gradlew`.
+* Run the project. In the case of JaCaMo, run the script `./gradlew`; in case of Jason `jason bdi_hw.mas2j`.
 
 === Exercises A
 
@@ -347,7 +344,7 @@ to react to the event.
 
 The first plan for `+happy(H)` is used when `H` is `bob` and the source
 of `happy(H)` is sincere
-(http://jason.sourceforge.net/api/jason/stdlib/my_name.html[`.my_name`]
+(http://jason-lang.github.io/api/jason/stdlib/my_name.html[`.my_name`]
 is true if the value of `H` is the name of the agent executing that
 internal action). The second plan is used otherwise. The first plan for
 `+!say(X)` is used on Fridays and the second on days other than Monday.
@@ -480,8 +477,8 @@ The `untell` message removes the corresponding belief in the receiver
 
 === Exercises E
 
-1. Write a new plan for Bob so that on Saturdays he drops all his intentions. The internal action http://jason.sourceforge.net/api/jason/stdlib/drop_all_intentions.html[`.drop_all_intentions`] may help for that.
-2. Write a plan for Bob so that as soon as it realises that someone is happy, he shares this information with Carlos *only* if Bob intends to `say(hello(carlos))`. The internal action http://jason.sourceforge.net/api/jason/stdlib/intend.html[`.intend`] may help for that.
+1. Write a new plan for Bob so that on Saturdays he drops all his intentions. The internal action http://jason-lang.github.io/api/jason/stdlib/drop_all_intentions.html[`.drop_all_intentions`] may help for that.
+2. Write a plan for Bob so that as soon as it realises that someone is happy, he shares this information with Carlos *only* if Bob intends to `say(hello(carlos))`. The internal action http://jason-lang.github.io/api/jason/stdlib/intend.html[`.intend`] may help for that.
 
 == Bob (the lazy -- finally)
 
@@ -528,7 +525,7 @@ sincere(alice).
 -----
 
 (You can refer to the
-http://jason.sourceforge.net/api/jason/stdlib/package-summary.html#package.description[Jason
+http://jason-lang.github.io/api/jason/stdlib/package-summary.html#package.description[Jason
 API] for explanations about all the commands used in this example.)
 
 This tutorial showed how some of the (great) BDI concepts become
