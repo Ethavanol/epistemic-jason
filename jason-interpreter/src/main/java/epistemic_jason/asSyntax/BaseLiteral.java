@@ -87,7 +87,7 @@ public class BaseLiteral extends LiteralImpl implements EpistemicFormula {
             if(term instanceof VarTerm){
                 this.addTerm(new BaseVarTerm(((Literal) term).getFunctor()));
             } else if(term instanceof ListTerm){
-                this.addTerm(new BaseListTerm());
+                this.addTerm(ASEpistemicSyntax.toBaseListTerm((ListTermImpl) term));
             } else if (term instanceof NumberTerm || term instanceof BaseLiteral){
                 this.addTerm(term);
             } else if (term instanceof Literal) {

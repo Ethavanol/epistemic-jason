@@ -1,6 +1,7 @@
 package epistemic_jason.asSyntax;
 
 import jason.asSyntax.Atom;
+import jason.asSyntax.ListTermImpl;
 import jason.asSyntax.Literal;
 import jason.asSyntax.Term;
 
@@ -74,5 +75,17 @@ public class ASEpistemicSyntax {
         return new EpistemicLiteral(modality, createBaseLiteral(namespace, positive, functor,terms));
     }
 
+    public static BaseListTerm toBaseListTerm(ListTermImpl term) {
+        BaseListTerm result = new BaseListTerm();
+        if(term.hasTerm()){
+            result.addTerms(term.getAsList().toArray(new Term[0]));
+        }
 
+        // Gestion du tail éventuel
+        if (term instanceof ListTermImpl && ((ListTermImpl) term).isTail()) {
+            result.setTail(((ListTermImpl) term).getTail());
+        }
+
+        return result;
+    }
 }

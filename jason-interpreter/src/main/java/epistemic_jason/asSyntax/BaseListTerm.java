@@ -5,9 +5,7 @@ import epistemic_jason.asSemantics.RewriteUnifier;
 import epistemic_jason.formula.Formula;
 import epistemic_jason.formula.PropFormula;
 import jason.asSemantics.Unifier;
-import jason.asSyntax.ListTermImpl;
-import jason.asSyntax.LogicalFormula;
-import jason.asSyntax.Pred;
+import jason.asSyntax.*;
 import jason.util.Pair;
 
 import java.util.Iterator;
@@ -47,6 +45,23 @@ public class BaseListTerm extends ListTermImpl implements EpistemicFormula {
 
     @Override
     public EpistemicFormula simplify(){
+        return this;
+    }
+
+    public BaseListTerm addTerms(Term... terms){
+        for (Term term: terms){
+            if(term instanceof VarTerm){
+                this.add(new BaseVarTerm(((Literal) term).getFunctor()));
+            } else if(term instanceof ListTerm){
+                this.add(ASEpistemicSyntax.toBaseListTerm((ListTermImpl) term));
+            } else if (term instanceof NumberTerm || term instanceof BaseLiteral){
+                this.add(term);
+            } else if (term instanceof Literal) {
+                this.add(new BaseLiteral((Literal) term));
+            } else {
+                this.add(term.clone());
+            }
+        }
         return this;
     }
 }
