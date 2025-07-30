@@ -9,6 +9,7 @@ import jason.asSyntax.*;
 import jason.util.Pair;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,18 +38,54 @@ public class BaseRelExpr extends RelExpr implements EpistemicFormula {
 
     @Override
     public Formula toPropFormula(List<Pair<LogicalFormula, RewriteUnifier>> mappingList){
-        if(!this.isGround())
-            return new PropFormula(new Pred(Literal.LFalse));
+        if (mappingList != null && !mappingList.isEmpty()) {
+            for(Pair<LogicalFormula, RewriteUnifier> pair : mappingList) {
+                if (((LogicalFormula)pair.getFirst()).equals(this) && pair.getSecond() != null) {
+                    return new PropFormula(new Pred((LTrue)));
+                }
+            }
 
-        // The expression has already been evaluated using log. consequences.
-        // I.e., can be propositionalized as 'true'
-        return new PropFormula(new Pred(Literal.LTrue));
+            return new PropFormula(new Pred(LFalse));
+        } else {
+            return new PropFormula(new Pred(Literal.LFalse));
+        }
     }
 
 
     public Iterator<List<Pair<LogicalFormula, RewriteUnifier>>> logicalConsequenceMapping(final AgentEpistemic ag, final Unifier un){
-        logger.warning("Please if your context is just a RelExpr, write it as a RelExpr contained in a LogExpr : A \\== b becomes A & A \\== b");
-        return EMPTY_UNIF_MAPPING_LIST.iterator();
+        final BaseRelExpr literalForm = new BaseRelExpr((RelExpr) this.toFormulaWithoutModalitities());
+        final Iterator<RewriteUnifier> ir = literalForm.rewriteConsequences(ag, un);
+        return new Iterator<List<Pair<LogicalFormula, RewriteUnifier>>>() {
+            RewriteUnifier current = null;
+
+            public boolean hasNext() {
+                if (this.current == null) {
+                    this.get();
+                }
+
+                return this.current != null;
+            }
+
+            public List<Pair<LogicalFormula, RewriteUnifier>> next() {
+                if (this.current != null) {
+                    Pair p = new Pair(literalForm, this.current);
+                    this.current = null;
+                    return Collections.singletonList(p);
+                } else {
+                    return Collections.emptyList();
+                }
+            }
+
+            private void get() {
+                this.current = null;
+                if (ir.hasNext()) {
+                    this.current = (RewriteUnifier)ir.next();
+                }
+            }
+
+            public void remove() {
+            }
+        };
     }
 
 
