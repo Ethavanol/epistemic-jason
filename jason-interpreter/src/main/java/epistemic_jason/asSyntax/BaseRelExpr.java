@@ -47,7 +47,7 @@ public class BaseRelExpr extends RelExpr implements EpistemicFormula {
 
             return new PropFormula(new Pred(LFalse));
         } else {
-            return new PropFormula(new Pred(Literal.LFalse));
+            return new PropFormula(new Pred(LFalse));
         }
     }
 

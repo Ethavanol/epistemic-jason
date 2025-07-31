@@ -36,15 +36,16 @@ public class BaseInternalAction extends InternalActionLiteral implements Epistem
 
     @Override
     public Formula toPropFormula(List<Pair<LogicalFormula, RewriteUnifier>> mappingList){
-        if (this.isGround()){
-            Literal simplified = (Literal) this.simplify();
-            Formula litFormula = new PropFormula(new Pred(simplified));
-            if (negated())
-                return new NotFormula(litFormula);
+        if (mappingList != null && !mappingList.isEmpty()) {
+            for(Pair<LogicalFormula, RewriteUnifier> pair : mappingList) {
+                if (((LogicalFormula)pair.getFirst()).equals(this) && pair.getSecond() != null) {
+                    return new PropFormula(new Pred((LTrue)));
+                }
+            }
 
-            return litFormula;
+            return new PropFormula(new Pred(LFalse));
         } else {
-            return BaseLiteral.LBaseFalse.toPropFormula(null);
+            return new PropFormula(new Pred(LFalse));
         }
     }
 
